@@ -9,5 +9,6 @@
 /dataSources.local.xml
 dataSources.xml
 /.idea
+.idea
 *.xml
 *.sqlite*
