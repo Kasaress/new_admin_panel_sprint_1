@@ -1,6 +1,6 @@
+from dataclasses import InitVar, dataclass
 from datetime import datetime
 from typing import Optional
-from dataclasses import dataclass, InitVar, field
 
 
 @dataclass
@@ -57,7 +57,6 @@ class PersonData:
             self.modified = updated_at
 
 
-
 @dataclass
 class PersonFilmworkData:
     id: str
@@ -70,6 +69,7 @@ class PersonFilmworkData:
     def __post_init__(self, created_at):
         if created_at:
             self.created = created_at
+
 
 @dataclass
 class GenreFilmworkData:
