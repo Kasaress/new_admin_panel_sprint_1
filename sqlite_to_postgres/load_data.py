@@ -3,7 +3,7 @@ import sqlite3
 import psycopg2
 from psycopg2.extras import DictCursor
 
-from constants import CHUNK_SIZE, MAPPING_TABLE_DATACLASS, DSL
+from constants import CHUNK_SIZE, DSL, MAPPING_TABLE_DATACLASS
 from exctactor import SQLiteExtractor
 from loader import PostgresSaver
 

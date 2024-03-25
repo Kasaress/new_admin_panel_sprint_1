@@ -1,4 +1,5 @@
 from dataclasses import astuple, fields
+
 from constants import SQL_INSERTS
 
 
@@ -50,7 +51,10 @@ class PostgresSaver:
         try:
             cursor.executemany(query, bind_values)
             rows_inserted = cursor.rowcount
-            print(f'{rows_inserted} из {len(data)} строк вставлено в таблицу {table_name}')
+            print(
+                f'{rows_inserted} из {len(data)} '
+                f'строк вставлено в таблицу {table_name}'
+            )
         except Exception as error:
             print(
                 f'Ошибка загрузки данных: {error}. '

@@ -1,7 +1,9 @@
+import os
+
+from dotenv import load_dotenv
+
 from data_objects import (FilmworkData, GenreData, GenreFilmworkData,
                           PersonData, PersonFilmworkData)
-import os
-from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -16,8 +18,8 @@ MAPPING_TABLE_DATACLASS = [
 CHUNK_SIZE = 10
 
 SQL_INSERTS = """
-        INSERT INTO content.{table_name} 
-        ({column_names_str}) VALUES {bind_values} 
+        INSERT INTO content.{table_name}
+        ({column_names_str}) VALUES {bind_values}
         ON CONFLICT (id) DO NOTHING
       """
 
