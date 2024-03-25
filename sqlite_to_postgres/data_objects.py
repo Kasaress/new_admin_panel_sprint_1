@@ -1,17 +1,6 @@
 from datetime import datetime
 from typing import Optional
-from dataclasses import dataclass, field, InitVar
-
-# @dataclass
-#     class MyClass:
-#         viewport: str = ""
-#         vp: InitVar[str] = None
-#
-#         def __post_init__(self, vp):
-#             if vp:
-#                 self.viewport = vp
-#
-#     mc = MyClass(vp="foo")
+from dataclasses import dataclass, InitVar, field
 
 
 @dataclass
@@ -39,12 +28,34 @@ class FilmworkData:
     creation_date: datetime
     rating: float
     type: str
-    genres: list[str]
+    file_path: InitVar[str] = None
+    updated_at: InitVar[datetime] = None
+    modified: Optional[datetime] = None
+    created: Optional[datetime] = None
+    created_at: InitVar[datetime] = None
+
+    def __post_init__(self, file_path, updated_at, created_at):
+        if created_at:
+            self.created = created_at
+        if updated_at:
+            self.modified = updated_at
+
 
 @dataclass
 class PersonData:
     id: str
     full_name: str
+    updated_at: InitVar[datetime] = None
+    modified: Optional[datetime] = None
+    created: Optional[datetime] = None
+    created_at: InitVar[datetime] = None
+
+    def __post_init__(self, created_at, updated_at):
+        if created_at:
+            self.created = created_at
+        if updated_at:
+            self.modified = updated_at
+
 
 
 @dataclass
@@ -53,12 +64,21 @@ class PersonFilmworkData:
     film_work_id: str
     person_id: str
     role: str
-    created: datetime
+    created: Optional[datetime] = None
+    created_at: InitVar[datetime] = None
 
+    def __post_init__(self, created_at):
+        if created_at:
+            self.created = created_at
 
 @dataclass
 class GenreFilmworkData:
     id: str
     film_work_id: str
     genre_id: str
-    created: datetime
+    created: Optional[datetime] = None
+    created_at: InitVar[datetime] = None
+
+    def __post_init__(self, created_at):
+        if created_at:
+            self.created = created_at

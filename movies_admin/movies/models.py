@@ -38,9 +38,9 @@ class Filmwork(UUIDMixin, TimeStampedMixin):
         TV_SHOW = 'tv_show', 'TV Show'
 
     title = models.CharField(_('title'), max_length=255)
-    description = models.TextField(_('description'), blank=True)
-    creation_date = models.DateField()
-    rating = models.FloatField(_('rating'), blank=True,
+    description = models.TextField(_('description'), blank=True, null=True,)
+    creation_date = models.DateField(blank=True, null=True,)
+    rating = models.FloatField(_('rating'), blank=True, null=True,
                                validators=[MinValueValidator(0),
                                            MaxValueValidator(100)])
     type = models.TextField(_('type'), choices=TypeChoices.choices)

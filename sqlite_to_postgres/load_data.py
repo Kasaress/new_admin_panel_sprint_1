@@ -2,8 +2,10 @@ import sqlite3
 
 import psycopg2
 from psycopg2.extras import DictCursor
-from data_objects import GenreData
-from dataclasses import fields, astuple
+from data_objects import GenreData, PersonData, FilmworkData, PersonFilmworkData, GenreFilmworkData
+from dataclasses import fields, astuple, asdict
+import traceback
+
 
 
 class PostgresSaver:
@@ -18,15 +20,19 @@ class PostgresSaver:
         col_count = ', '.join(['%s'] * len(column_names))
 
         bind_values = ','.join(cursor.mogrify(f"({col_count})", astuple(dat)).decode('utf-8') for dat in data)
-
+        print(f'{bind_values=}')
         query = (f'INSERT INTO content.{table} ({column_names_str}) VALUES {bind_values} '
                  f' ON CONFLICT (id) DO NOTHING'
                  )
-        cursor.executemany(query, bind_values)
-        rows_inserted = cursor.rowcount
-        rows_not_inserted = len(data) - rows_inserted
-        print(f'{rows_inserted} rows inserted')
-        print(f'{rows_not_inserted} rows not inserted')
+        try:
+            cursor.executemany(query, bind_values)
+            rows_inserted = cursor.rowcount
+            rows_not_inserted = len(data) - rows_inserted
+            print(f'{rows_inserted} rows inserted to {table}')
+            print(f'{rows_not_inserted} rows not inserted to {table}')
+        except ValueError as error:
+            print(f'!!!! Ошибка загрузки данных: {error}')
+            traceback.print_exc()
 
 
 class SQLiteExtractor:
@@ -56,29 +62,38 @@ class SQLiteExtractor:
         cursor.execute(query, (start_row, end_row - start_row))
 
         result = cursor.fetchall()
+        res = [data_class(**data) for data in result]
+        print(f'raw {res=}')
+        # print(f'{res[0].created=}')
+        return res
 
-        return [data_class(**data) for data in result]
-
-
+mapping = [
+    # ('genre', GenreData),
+    # ('person', PersonData),
+    ('film_work', FilmworkData),
+    # ('person_film_work', PersonFilmworkData),
+    # ('genre_film_work', GenreFilmworkData),
+]
 def load_from_sqlite(connection: sqlite3.Connection, pg_conn):
     """Основной метод загрузки данных из SQLite в Postgres"""
     postgres_saver = PostgresSaver(pg_conn)
     sqlite_extractor = SQLiteExtractor(connection)
-    # для списка таблиц извлеки данные и сохрани их.
-    # в параметры возьми имя таблицы и внутри из маппинга в константе достать нужный класс
-    count = sqlite_extractor.get_count_rows('genre')
-    chunk_size = 5
-    start = 0
-    while start < count:
-        end = start + chunk_size
-        if end > count:
-            end = count
-        data = sqlite_extractor.extract_data(start, end, 'genre', GenreData)
-        print(data)
-        postgres_saver.save_all_data(data, 'genre')
-        start = end
 
-
+    for table_name, data_class in mapping:
+        print(table_name, data_class)
+        count = sqlite_extractor.get_count_rows(table_name)
+        print(f'достали из бд {count} строк')
+        chunk_size = 100
+        start = 0
+        while start < count:
+            end = start + chunk_size
+            if end > count:
+                end = count
+            print(f'забираем данные с {start} по {end} из {count}')
+            data = sqlite_extractor.extract_data(start, end, table_name, data_class)
+            postgres_saver.save_all_data(data, table_name)
+            start = end
+        print('данные выгружены и загружены')
 
 
 if __name__ == '__main__':
