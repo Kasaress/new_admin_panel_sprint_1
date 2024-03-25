@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-24 11:38+0000\n"
+"POT-Creation-Date: 2024-03-25 20:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,14 @@ msgstr ""
 msgid "movies"
 msgstr ""
 
+#: movies/models.py:8
+msgid "created"
+msgstr ""
+
+#: movies/models.py:9
+msgid "modified"
+msgstr ""
+
 #: movies/models.py:23
 msgid "name"
 msgstr "name"
@@ -24,9 +32,21 @@ msgstr "name"
 msgid "description"
 msgstr "description"
 
+#: movies/models.py:28
+msgid "Genre"
+msgstr ""
+
+#: movies/models.py:29
+msgid "Genres"
+msgstr ""
+
 #: movies/models.py:40
 msgid "title"
 msgstr "title"
+
+#: movies/models.py:42
+msgid "creation_date"
+msgstr ""
 
 #: movies/models.py:43
 msgid "rating"
