@@ -10,7 +10,7 @@ class PostgresSaver:
     def __init__(self, conn):
         self.conn = conn
 
-    def save_all_data(self, data):
+    def save_all_data(self, data, table):
         cursor = self.conn.cursor()
         column_names = [field.name for field in fields(data[0])]
         column_names_str = ','.join(column_names)
@@ -19,41 +19,45 @@ class PostgresSaver:
 
         bind_values = ','.join(cursor.mogrify(f"({col_count})", astuple(dat)).decode('utf-8') for dat in data)
 
-        query = (f'INSERT INTO content.genre ({column_names_str}) VALUES {bind_values} '
+        query = (f'INSERT INTO content.{table} ({column_names_str}) VALUES {bind_values} '
                  f' ON CONFLICT (id) DO NOTHING'
                  )
+        cursor.executemany(query, bind_values)
+        rows_inserted = cursor.rowcount
+        rows_not_inserted = len(data) - rows_inserted
+        print(f'{rows_inserted} rows inserted')
+        print(f'{rows_not_inserted} rows not inserted')
 
-        cursor.execute(query)
-        print('я все сохранил')
 
 class SQLiteExtractor:
     def __init__(self, conn):
         self.conn = conn
 
-    def get_count_rows(self):
+    def get_count_rows(self, table_name):
+        """Возвращает количество строк в переданной таблице."""
 
         self.conn.row_factory = sqlite3.Row
         cursor = self.conn.cursor()
-        cursor.execute("SELECT COUNT(*) FROM genre")
+        cursor.execute(f"SELECT COUNT(*) FROM {table_name}")
 
         result = cursor.fetchone()
         return result[0]
 
-    def extract_movies(self, start_row, end_row):  # TODO контекстный менеджер
+    def extract_data(self, start_row, end_row, table_name, data_class):  # TODO контекстный менеджер
+        """
+        Универсальный метод извлечения данных из БД.
+        Принимает название таблицы для выгрузки и датакласс для преобразования и валидации данных.
+        Осуществляет выгрузку чанками.
+        """
         self.conn.row_factory = sqlite3.Row
         cursor = self.conn.cursor()
-        # cursor.execute("""SELECT * FROM genre""")
-        cursor.execute("""SELECT * FROM genre LIMIT ?, ?""", (start_row, end_row - start_row))
+
+        query = f"SELECT * FROM {table_name} LIMIT ?, ?"
+        cursor.execute(query, (start_row, end_row - start_row))
 
         result = cursor.fetchall()
-        print('я все извлек')
 
-        return [GenreData(**data) for data in result]
-
-
-def chunks(iterable, n):
-    for i in range(0, len(iterable), n):
-        yield iterable[i:i+n]
+        return [data_class(**data) for data in result]
 
 
 def load_from_sqlite(connection: sqlite3.Connection, pg_conn):
@@ -62,16 +66,16 @@ def load_from_sqlite(connection: sqlite3.Connection, pg_conn):
     sqlite_extractor = SQLiteExtractor(connection)
     # для списка таблиц извлеки данные и сохрани их.
     # в параметры возьми имя таблицы и внутри из маппинга в константе достать нужный класс
-    count = sqlite_extractor.get_count_rows()
-    chunk_size = 50
+    count = sqlite_extractor.get_count_rows('genre')
+    chunk_size = 5
     start = 0
     while start < count:
         end = start + chunk_size
         if end > count:
             end = count
-        data = sqlite_extractor.extract_movies(start, end)
+        data = sqlite_extractor.extract_data(start, end, 'genre', GenreData)
         print(data)
-        postgres_saver.save_all_data(data)
+        postgres_saver.save_all_data(data, 'genre')
         start = end
 
 
