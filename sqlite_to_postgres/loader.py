@@ -23,9 +23,9 @@ class PostgresSaver:
         )
         try:
             cursor.execute(query)
-            print(f'Single row inserted to {table_name} - {bind_values}')
+            print(f'Строка вставлена в таблицу {table_name} - {bind_values}')
         except Exception as error:
-            print(f'Ошибка загрузки значения: {error} {bind_values=}.')
+            print(f'Ошибка загрузки строки: {error} {bind_values=}.')
 
     def save_all_data(self, data, table_name) -> None:
         """
@@ -50,9 +50,7 @@ class PostgresSaver:
         try:
             cursor.executemany(query, bind_values)
             rows_inserted = cursor.rowcount
-            rows_not_inserted = len(data) - rows_inserted
-            print(f'{rows_inserted} rows inserted to {table_name}')
-            print(f'{rows_not_inserted} rows not inserted to {table_name}')
+            print(f'{rows_inserted} из {len(data)} строк вставлено в таблицу {table_name}')
         except Exception as error:
             print(
                 f'Ошибка загрузки данных: {error}. '
