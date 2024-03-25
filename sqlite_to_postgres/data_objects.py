@@ -1,6 +1,5 @@
 from dataclasses import InitVar, dataclass
 from datetime import datetime
-from typing import Optional
 
 
 @dataclass
@@ -8,10 +7,10 @@ class GenreData:
     id: str
     name: str
     updated_at: InitVar[datetime] = None
-    modified: Optional[datetime] = None
-    created: Optional[datetime] = None
+    modified: datetime | None = None
+    created: datetime | None = None
     created_at: InitVar[datetime] = None
-    description: Optional[str] = None
+    description: str | None = None
 
     def __post_init__(self, created_at, updated_at):
         if created_at:
@@ -24,14 +23,14 @@ class GenreData:
 class FilmworkData:
     id: str
     title: str
-    description: str
-    creation_date: datetime
-    rating: float
     type: str
+    description: str | None = None
+    creation_date: datetime | None = None
+    rating: float | None = None
     file_path: InitVar[str] = None
     updated_at: InitVar[datetime] = None
-    modified: Optional[datetime] = None
-    created: Optional[datetime] = None
+    modified: datetime | None = None
+    created: datetime | None = None
     created_at: InitVar[datetime] = None
 
     def __post_init__(self, file_path, updated_at, created_at):
@@ -46,8 +45,8 @@ class PersonData:
     id: str
     full_name: str
     updated_at: InitVar[datetime] = None
-    modified: Optional[datetime] = None
-    created: Optional[datetime] = None
+    modified: datetime | None = None
+    created: datetime | None = None
     created_at: InitVar[datetime] = None
 
     def __post_init__(self, created_at, updated_at):
@@ -63,7 +62,7 @@ class PersonFilmworkData:
     film_work_id: str
     person_id: str
     role: str
-    created: Optional[datetime] = None
+    created: datetime | None = None
     created_at: InitVar[datetime] = None
 
     def __post_init__(self, created_at):
@@ -76,7 +75,7 @@ class GenreFilmworkData:
     id: str
     film_work_id: str
     genre_id: str
-    created: Optional[datetime] = None
+    created: datetime | None = None
     created_at: InitVar[datetime] = None
 
     def __post_init__(self, created_at):
