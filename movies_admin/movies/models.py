@@ -21,7 +21,7 @@ class UUIDMixin(models.Model):
 
 class Genre(UUIDMixin, TimeStampedMixin):
     name = models.CharField(_('name'), max_length=255)
-    description = models.TextField(_('description'), blank=True)
+    description = models.TextField(_('description'), blank=True, null=True,)
 
     class Meta:
         db_table = "content\".\"genre"
@@ -81,4 +81,7 @@ class PersonFilmwork(UUIDMixin):
     person = models.ForeignKey('Person', on_delete=models.CASCADE)
     role = models.TextField(_('role'))
     created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "content\".\"person_film_work"
 
