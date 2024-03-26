@@ -53,6 +53,8 @@ if __name__ == '__main__':
     print(f'Запуск скрипта с конфигом: {DSL}')
     with (
         sqlite3.connect('db.sqlite') as sqlite_conn,
-        psycopg2.connect(**DSL, cursor_factory=DictCursor) as pg_conn  # type: ignore
+        psycopg2.connect(
+            **DSL, cursor_factory=DictCursor
+        ) as pg_conn  # type: ignore
     ):
         load_from_sqlite(sqlite_conn, pg_conn)

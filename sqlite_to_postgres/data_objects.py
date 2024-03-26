@@ -47,30 +47,30 @@ class Base:
             self.created = self._parse_datetime(self.created)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class GenreData(Base):
-    name: str = None
+    name: str
     description: str | None = None
 
 
-@dataclass
+@dataclass(kw_only=True)
 class PersonData(Base):
-    full_name: str = None
+    full_name: str
 
 
-@dataclass
+@dataclass(kw_only=True)
 class PersonFilmworkData(Created):
-    id: str = None
-    film_work_id: str = None
-    person_id: str = None
-    role: str = None
+    id: str
+    film_work_id: str
+    person_id: str
+    role: str
 
 
-@dataclass
+@dataclass(kw_only=True)
 class GenreFilmworkData(Created):
-    id: str = None
-    film_work_id: str = None
-    genre_id: str = None
+    id: str
+    film_work_id: str
+    genre_id: str
 
 
 @dataclass

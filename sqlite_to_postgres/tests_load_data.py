@@ -3,7 +3,7 @@ import sqlite3
 import psycopg2
 from psycopg2.extras import DictCursor
 
-from constants import CHUNK_SIZE, DSL, MAPPING_TABLE_DATACLASS, DATACLASS_TYPE
+from constants import CHUNK_SIZE, DATACLASS_TYPE, DSL, MAPPING_TABLE_DATACLASS
 
 
 class TestDataLoad:
@@ -73,7 +73,11 @@ class TestDataLoad:
         )
         print(f'количество строк в таблицах {table_name} совпадает')
 
-    def check_data_equal(self, table_name: str, data_class: DATACLASS_TYPE) -> None:
+    def check_data_equal(
+            self,
+            table_name: str,
+            data_class: DATACLASS_TYPE
+    ) -> None:
         count = self._get_sqlite_row_count(table_name)
         chunk_size = CHUNK_SIZE
         start = 0
@@ -93,11 +97,6 @@ class TestDataLoad:
                 start,
                 end
             )
-            print(f'{sqlite_data[0]}')
-            print(f'{postgres_data[0]}')
-            # print(f'{sqlite_data[0].modified}')
-            # print(f'{postgres_data[0].modified}')
-            # assert sqlite_data[0].modified == postgres_data[0].modified
             assert sqlite_data == postgres_data, (
                 f'Не совпадают данные в таблицах {table_name}. '
                 f'{sqlite_data=}, '
@@ -117,7 +116,9 @@ if __name__ == '__main__':
     print(f'Запуск тестов с конфигом: {DSL}')
     with (
         sqlite3.connect('db.sqlite') as sqlite_conn,
-        psycopg2.connect(**DSL, cursor_factory=DictCursor) as pg_conn  # type: ignore
+        psycopg2.connect(
+            **DSL, cursor_factory=DictCursor
+        ) as pg_conn  # type: ignore
     ):
         checker = TestDataLoad(sqlite_conn, pg_conn)
         checker.run()
