@@ -6,7 +6,7 @@ from .models import Filmwork, Genre, GenreFilmwork, Person, PersonFilmwork
 @admin.register(Genre)
 class GenreAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')
-    list_filter = ('name',)
+    search_fields = ('name',)
 
 
 class GenreFilmworkInline(admin.TabularInline):
@@ -15,9 +15,6 @@ class GenreFilmworkInline(admin.TabularInline):
 
 class PersonFilmworkInline(admin.TabularInline):
     model = PersonFilmwork
-    # model = Filmwork.persons.through
-    raw_id_fields = ['person', ]
-    # extra = 0
 
 
 @admin.register(Filmwork)
@@ -28,13 +25,13 @@ class FilmworkAdmin(admin.ModelAdmin):
         'type',
         'creation_date',
         'rating',
-        'created',
-        'modified'
     )
     list_filter = ('type',)
     search_fields = ('title', 'description', 'id')
+    autocomplete_fields = ('persons', 'genres')
 
 
 @admin.register(Person)
 class PersonAdmin(admin.ModelAdmin):
     list_display = ('full_name',)
+    search_fields = ('full_name',)
