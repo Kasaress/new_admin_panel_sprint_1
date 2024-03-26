@@ -52,7 +52,9 @@ class Filmwork(UUIDMixin, TimeStampedMixin):
 
     title = models.CharField(_('title'), max_length=255)
     description = models.TextField(_('description'), blank=True, null=True,)
-    creation_date = models.DateField(_('creation_date'), blank=True, null=True,)
+    creation_date = models.DateField(
+        _('creation_date'), blank=True, null=True,
+    )
     rating = models.FloatField(_('rating'), blank=True, null=True,
                                validators=[MinValueValidator(0),
                                            MaxValueValidator(100)])
@@ -90,4 +92,3 @@ class PersonFilmwork(UUIDMixin):
         db_table = "content\".\"person_film_work"
         verbose_name = _('person_film_work')
         verbose_name_plural = _('person_film_works')
-

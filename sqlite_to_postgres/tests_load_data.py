@@ -34,10 +34,6 @@ class TestDataLoad:
         try:
             cursor.execute(query, (start_row, end_row - start_row))
             result = cursor.fetchall()
-            print(
-                f'Данные получены из SQLite: таблица {table_name}, '
-                f'строки с {start_row} по {end_row}'
-            )
             return [data_class(**data) for data in result]
         except Exception as error:
             print(f'Ошибка чтения данных из таблицы {table_name}: {error}')
@@ -52,10 +48,6 @@ class TestDataLoad:
         try:
             cursor.execute(query, (start_row, end_row - start_row))
             result = cursor.fetchall()
-            print(
-                f'Данные получены из Postgres: таблица {table_name}, '
-                f'строки с {start_row} по {end_row}'
-            )
             return [data_class(**data) for data in result]
         except Exception as error:
             print(f'Ошибка чтения данных из таблицы {table_name}: {error}')
@@ -71,7 +63,7 @@ class TestDataLoad:
             f'В SQLite {sqlite_row_count},'
             f'в Postgres {postgres_row_count}'
         )
-        print(f'количество строк в таблицах {table_name} совпадает')
+        print(f'Количество строк в таблицах {table_name} совпадает.')
 
     def check_data_equal(
             self,
