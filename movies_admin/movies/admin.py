@@ -27,7 +27,6 @@ class FilmworkAdmin(admin.ModelAdmin):
     search_fields = ('title', 'description', 'id')
 
 
-
 @admin.register(Person)
 class PersonAdmin(admin.ModelAdmin):
     list_display = ('full_name',)

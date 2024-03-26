@@ -4,8 +4,12 @@ from dotenv import load_dotenv
 
 from data_objects import (FilmworkData, GenreData, GenreFilmworkData,
                           PersonData, PersonFilmworkData)
+from typing import Union
+
 
 load_dotenv()
+
+DATACLASS_TYPE = Union[FilmworkData, GenreData, GenreFilmworkData, PersonData, PersonFilmworkData]
 
 MAPPING_TABLE_DATACLASS = [
     ('genre', GenreData),
@@ -15,7 +19,7 @@ MAPPING_TABLE_DATACLASS = [
     ('genre_film_work', GenreFilmworkData),
 ]
 
-CHUNK_SIZE = 1
+CHUNK_SIZE = 10
 
 SQL_INSERTS = """
         INSERT INTO content.{table_name}
