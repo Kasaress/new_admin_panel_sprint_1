@@ -15,7 +15,7 @@ MAPPING_TABLE_DATACLASS = [
     ('genre_film_work', GenreFilmworkData),
 ]
 
-CHUNK_SIZE = 10
+CHUNK_SIZE = 1
 
 SQL_INSERTS = """
         INSERT INTO content.{table_name}

@@ -6,6 +6,7 @@ from psycopg2.extras import DictCursor
 from constants import CHUNK_SIZE, DSL, MAPPING_TABLE_DATACLASS
 from dataclasses import dataclass
 
+
 class TestDataLoad:
     def __init__(self, sqlite_conn, pg_conn) -> None:
         self.sqlite_conn = sqlite_conn

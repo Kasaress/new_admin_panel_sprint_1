@@ -31,14 +31,14 @@ class Base:
 
 @dataclass
 class GenreData(Base):
-    name: str = ''
+    name: str = None
     description: str | None = None
 
 
 @dataclass
 class FilmworkData(Base):
-    title: str = ''
-    type: str = ''
+    title: str = None
+    type: str = None
     description: str | None = None
     creation_date: datetime | None = None
     rating: float | None = None
@@ -47,7 +47,7 @@ class FilmworkData(Base):
 
 @dataclass
 class PersonData(Base):
-    full_name: str = ''
+    full_name: str = None
 
 
 @dataclass

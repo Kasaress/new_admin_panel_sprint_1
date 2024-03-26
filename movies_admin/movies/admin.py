@@ -13,9 +13,10 @@ class GenreFilmworkInline(admin.TabularInline):
 
 
 class PersonFilmworkInline(admin.TabularInline):
-    # model = PersonFilmwork
-    model = Filmwork.persons.through
-    extra = 0
+    model = PersonFilmwork
+    # model = Filmwork.persons.through
+    raw_id_fields = ['person', ]
+    # extra = 0
 
 
 @admin.register(Filmwork)
@@ -24,6 +25,7 @@ class FilmworkAdmin(admin.ModelAdmin):
     list_display = ('title', 'type', 'creation_date', 'rating', 'created', 'modified')
     list_filter = ('type',)
     search_fields = ('title', 'description', 'id')
+
 
 
 @admin.register(Person)
