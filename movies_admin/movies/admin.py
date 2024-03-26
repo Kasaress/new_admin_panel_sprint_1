@@ -13,7 +13,9 @@ class GenreFilmworkInline(admin.TabularInline):
 
 
 class PersonFilmworkInline(admin.TabularInline):
-    model = PersonFilmwork
+    # model = PersonFilmwork
+    model = Filmwork.persons.through
+    extra = 0
 
 
 @admin.register(Filmwork)

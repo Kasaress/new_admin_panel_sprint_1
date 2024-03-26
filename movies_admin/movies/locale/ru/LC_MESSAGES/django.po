@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-25 20:21+0000\n"
+"POT-Creation-Date: 2024-03-26 04:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,9 +14,9 @@ msgstr ""
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: movies/apps.py:8
+#: movies/apps.py:8 movies/models.py:65
 msgid "movies"
-msgstr "Фильмы"
+msgstr "Кинопроизведения"
 
 #: movies/models.py:8
 #, fuzzy
@@ -32,7 +32,7 @@ msgstr "Дата редактирования"
 msgid "name"
 msgstr "Имя"
 
-#: movies/models.py:24 movies/models.py:41
+#: movies/models.py:24 movies/models.py:53
 msgid "description"
 msgstr "Описание"
 
@@ -44,26 +44,56 @@ msgstr "Жанр"
 msgid "Genres"
 msgstr "Жанры"
 
-#: movies/models.py:40
-msgid "title"
-msgstr "Название"
-
-#: movies/models.py:42
-msgid "creation_date"
-msgstr "Дата создания"
-
-#: movies/models.py:43
-msgid "rating"
-msgstr "Рейтинг"
-
-#: movies/models.py:46
-msgid "type"
-msgstr "Тип"
-
-#: movies/models.py:68
+#: movies/models.py:36
 msgid "full_name"
 msgstr "Полное имя"
 
-#: movies/models.py:82
+#: movies/models.py:40
+msgid "person"
+msgstr "Персона"
+
+#: movies/models.py:41
+msgid "persons"
+msgstr "Персоны"
+
+#: movies/models.py:52
+msgid "title"
+msgstr "Название"
+
+#: movies/models.py:54
+msgid "creation_date"
+msgstr "Дата создания"
+
+#: movies/models.py:55
+msgid "rating"
+msgstr "Рейтинг"
+
+#: movies/models.py:58
+msgid "type"
+msgstr "Тип"
+
+#: movies/models.py:64
+#, fuzzy
+#| msgid "movies"
+msgid "movie"
+msgstr "Кинопроизведение"
+
+#: movies/models.py:78
+msgid "genre_film_work"
+msgstr "Связь жанр-фильм"
+
+#: movies/models.py:79
+msgid "genre_film_works"
+msgstr "Связи жанр-фильм"
+
+#: movies/models.py:85
 msgid "role"
 msgstr "Роль"
+
+#: movies/models.py:90
+msgid "person_film_work"
+msgstr "Связь персона-фильма"
+
+#: movies/models.py:91
+msgid "person_film_works"
+msgstr "Связи персона-фильм"
