@@ -47,8 +47,8 @@ class Person(UUIDMixin, TimeStampedMixin):
 
 class Filmwork(UUIDMixin, TimeStampedMixin):
     class TypeChoices(models.TextChoices):
-        MOVIE = 'movie', 'Movie'
-        TV_SHOW = 'tv_show', 'TV Show'
+        MOVIE = _('movie'), _('Movie')
+        TV_SHOW = _('tv_show'), _('TV Show')
 
     title = models.CharField(_('title'), max_length=255)
     description = models.TextField(_('description'), blank=True, null=True,)
@@ -70,6 +70,9 @@ class Filmwork(UUIDMixin, TimeStampedMixin):
         db_table = "content\".\"film_work"
         verbose_name = _('movie')
         verbose_name_plural = _('movies')
+        indexes = [
+            models.Index(fields=['creation_date', 'rating'], name='film_work_creation_rating_idx'),
+        ]
 
     def __str__(self):
         return self.title
@@ -88,19 +91,35 @@ class GenreFilmwork(UUIDMixin):
         db_table = "content\".\"genre_film_work"
         verbose_name = _('genre_film_work')
         verbose_name_plural = _('genre_film_works')
+        indexes = [
+            models.Index(fields=['film_work_id', 'genre_id'], name='film_work_genre_idx'),
+        ]
 
+    def __str__(self):
+        return f'Жанры кинопроизведения {self.film_work.title}'
 
 class PersonFilmwork(UUIDMixin):
+    class TypeChoices(models.TextChoices):
+        ACTOR = _('actor'), _('Actor')
+        WRITER = _('writer'), _('Writer')
+        DIRECTOR = _('director'), _('Director')
+
     film_work = models.ForeignKey(
         'Filmwork', on_delete=models.CASCADE, verbose_name=_('movie')
     )
     person = models.ForeignKey(
         'Person', on_delete=models.CASCADE, verbose_name=_('person')
     )
-    role = models.TextField(_('role'))
+    role = models.TextField(_('role'), choices=TypeChoices.choices)
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = "content\".\"person_film_work"
         verbose_name = _('person_film_work')
         verbose_name_plural = _('person_film_works')
+        indexes = [
+            models.Index(fields=['film_work_id', 'person_id', 'role'], name='film_work_person_idx'),
+        ]
+
+    def __str__(self):
+        return f'Персоны кинопроизведения {self.film_work.title}'
