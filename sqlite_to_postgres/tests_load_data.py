@@ -3,7 +3,8 @@ import sqlite3
 import psycopg2
 from psycopg2.extras import DictCursor
 
-from constants import CHUNK_SIZE, DATACLASS_TYPE, DSL, MAPPING_TABLE_DATACLASS
+from config import CHUNK_SIZE, DATACLASS_TYPE, DSL, MAPPING_TABLE_DATACLASS
+from helpers import logger
 
 
 class TestDataLoad:
@@ -36,7 +37,9 @@ class TestDataLoad:
             result = cursor.fetchall()
             return [data_class(**data) for data in result]
         except Exception as error:
-            print(f'Ошибка чтения данных из таблицы {table_name}: {error}')
+            logger.exception(
+                f'Ошибка чтения данных из таблицы {table_name}: {error}'
+            )
             return None
 
     def _get_postgres_data(self, table_name, data_class, start_row, end_row):
@@ -50,7 +53,9 @@ class TestDataLoad:
             result = cursor.fetchall()
             return [data_class(**data) for data in result]
         except Exception as error:
-            print(f'Ошибка чтения данных из таблицы {table_name}: {error}')
+            logger.exception(
+                f'Ошибка чтения данных из таблицы {table_name}: {error}'
+            )
             return None
 
     def check_rows_counts(self, table_name: str) -> None:
@@ -63,7 +68,7 @@ class TestDataLoad:
             f'В SQLite {sqlite_row_count},'
             f'в Postgres {postgres_row_count}'
         )
-        print(f'Количество строк в таблицах {table_name} совпадает.')
+        logger.info(f'Количество строк в таблицах {table_name} совпадает.')
 
     def check_data_equal(
             self,
@@ -96,7 +101,7 @@ class TestDataLoad:
             )
             start = end
 
-        print(f'Данные в таблицах {table_name} совпадают.')
+        logger.info(f'Данные в таблицах {table_name} совпадают.')
 
     def run(self):
         for table_name, data_class in MAPPING_TABLE_DATACLASS:
@@ -105,7 +110,7 @@ class TestDataLoad:
 
 
 if __name__ == '__main__':
-    print(f'Запуск тестов с конфигом: {DSL}')
+    logger.info(f'Запуск тестов с конфигом: {DSL}')
     with (
         sqlite3.connect('db.sqlite') as sqlite_conn,
         psycopg2.connect(

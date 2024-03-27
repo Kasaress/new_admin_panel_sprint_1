@@ -12,3 +12,6 @@ dataSources.xml
 .idea
 *.xml
 *.sqlite*
+*.log
+*.logs
+

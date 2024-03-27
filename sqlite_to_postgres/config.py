@@ -35,3 +35,5 @@ DSL = {
     'host': os.environ.get('HOST', '127.0.0.1'),
     'port': os.environ.get('PORT', 5432)
 }
+
+SQLITE_PATH = 'db.sqlite'

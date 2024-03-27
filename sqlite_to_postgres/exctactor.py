@@ -1,5 +1,7 @@
 import sqlite3
 
+from helpers import logger
+
 
 class SQLiteExtractor:
     """Класс для выгрузки данных из SQLite."""
@@ -15,7 +17,9 @@ class SQLiteExtractor:
             result = cursor.fetchone()
             return result[0]
         except Exception as error:
-            print(f'Ошибка чтения данных из таблицы {table_name}: {error}')
+            logger.exception(
+                f'Ошибка чтения данных из таблицы {table_name}: {error}'
+            )
             return None
 
     def extract_data(self, start_row, end_row, table_name, data_class):
@@ -31,11 +35,13 @@ class SQLiteExtractor:
         try:
             cursor.execute(query, (start_row, end_row - start_row))
             result = cursor.fetchall()
-            print(
+            logger.info(
                 f'Данные получены из SQLite: таблица {table_name}, '
                 f'строки с {start_row} по {end_row}'
             )
             return [data_class(**data) for data in result]
         except Exception as error:
-            print(f'Ошибка чтения данных из таблицы {table_name}: {error}')
+            logger.exception(
+                f'Ошибка чтения данных из таблицы {table_name}: {error}'
+            )
             return None
